@@ -1,0 +1,36 @@
+humans:
+  ECI-0008: genomes/human/ECI-0008.fasta
+  ECI-0015: genomes/human/ECI-0015.fasta
+  ECI-0123: genomes/human/ECI-0123.fasta
+  ECI-0132: genomes/human/ECI-0132.fasta
+  ECI-0217: genomes/human/ECI-0217.fasta
+  ECI-0249: genomes/human/ECI-0249.fasta
+  ECI-0258: genomes/human/ECI-0258.fasta
+  ECI-0270: genomes/human/ECI-0270.fasta
+  ECI-0272: genomes/human/ECI-0272.fasta
+  ECI-0351: genomes/human/ECI-0351.fasta
+  ECI-0357: genomes/human/ECI-0357.fasta
+  ECI-0497: genomes/human/ECI-0497.fasta
+  ECI-0504: genomes/human/ECI-0504.fasta
+  ECI-0855: genomes/human/ECI-0855.fasta
+  ECI-0857: genomes/human/ECI-0857.fasta
+  ECI-2859: genomes/human/ECI-2859.fasta
+
+bovines:
+  ECI-0715: genomes/bovine/ECI-0715.fasta
+  ECI-1364: genomes/bovine/ECI-1364.fasta
+  ECI-1437: genomes/bovine/ECI-1437.fasta
+  ECI-1717: genomes/bovine/ECI-1717.fasta
+  ECI-1830: genomes/bovine/ECI-1830.fasta
+  ECI-1907: genomes/bovine/ECI-1907.fasta
+  ECI-1908: genomes/bovine/ECI-1908.fasta
+  ECI-1909: genomes/bovine/ECI-1909.fasta
+  ECI-1910: genomes/bovine/ECI-1910.fasta
+  ECI-1911: genomes/bovine/ECI-1911.fasta
+  ECI-1912: genomes/bovine/ECI-1912.fasta
+  ECI-2570: genomes/bovine/ECI-2570.fasta
+  ECI-2571: genomes/bovine/ECI-2571.fasta
+  ECI-2573: genomes/bovine/ECI-2573.fasta
+  ECI-2578: genomes/bovine/ECI-2578.fasta
+  ECI-2583: genomes/bovine/ECI-2583.fasta
+  ECI-2591: genomes/bovine/ECI-2591.fasta
