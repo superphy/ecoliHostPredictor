@@ -21,18 +21,20 @@ def readData(fileName):
 
     env = lmdb.Environment('database', max_dbs=35)
     env.set_mapsize(5000000000)
-    #masterenv = lmdb.Environment('masterdb', max_dbs=5, map_size=5000000000)
+    masterenv = lmdb.Environment('masterdb', max_dbs=5, map_size=5000000000)
     genomeID = fileName;
     db1 = env.open_db(genomeID.encode("ascii"),dupsort=True)
-    with env.begin(write=True, db=db1) as transaction:
+    placeHolderStr = '0'.encode('ascii')
+    with env.begin(write=True, db=db1) as transaction, masterenv.begin(write=True) as txn:
         with open(fileName, "rU") as handle:
             for record in SeqIO.parse(handle, "fasta"):
                 kmerCount = str(record.id)
                 kmerSeq = str(record.seq)
-                transaction.put(kmerSeq.encode("ascii"),kmerCount.encode("ascii"))
+                byteStr = kmerSeq.encode("ascii")
+                transaction.put(byteStr,kmerCount.encode("ascii"))
 
-                #with masterenv.begin(write=True) as txn:
-                #    txn.put(kmerSeq.encode('ascii'), '0'.encode('ascii'), overwrite=True)
+
+                txn.put(byteStr, placeHolderStr, overwrite=True)
 
     #pprint(env.stat())
 
