@@ -36,9 +36,9 @@ def readData(fileName):
 
                 txn.put(byteStr, placeHolderStr, overwrite=True)
 
-    #pprint(env.stat())
+        print(env.stat())
 
-    #pprint(masterenv.stat())
+        print(masterenv.stat())
 
 #db = lmdb.open("genomeData")
 
