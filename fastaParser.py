@@ -4,6 +4,7 @@ import lmdb
 import sys
 import pprint
 
+
 def readData(fileName):
 
     #Env max_dbs = 40
@@ -32,13 +33,12 @@ def readData(fileName):
                 kmerSeq = str(record.seq)
                 byteStr = kmerSeq.encode("ascii")
                 transaction.put(byteStr,kmerCount.encode("ascii"))
-
-
                 txn.put(byteStr, placeHolderStr, overwrite=True)
 
-        print(env.stat())
 
-        print(masterenv.stat())
+
+        #print(env.stat()["entries"])
+        #print(masterenv.stat())
 
 #db = lmdb.open("genomeData")
 
