@@ -4,7 +4,6 @@ import lmdb
 import sys
 import zarr
 
-
 env = lmdb.Environment('database', max_dbs=35)
 masterenv = lmdb.Environment('masterdb')
 numRows = env.stat()["entries"] #33
@@ -13,8 +12,6 @@ zarrFile = zarr.open('zarr/zarrFile.zarr',mode='w', shape=(numRows, numCols),chu
 
 #set whole array to zero
 zarrFile[:] = 0;
-
-#now we want to go through and change the zeros for where there kmer count > 0
 
 #prints all key value pairs in the masterdb as b'
 """
@@ -32,6 +29,14 @@ with env.begin() as transaction:
         print(key.decode("ascii"))
 """
 
+#genome indexer, used to convert genome name to row number for zarr
+genomeToIndex={}
+genomeCounter=0
+
+#kmer indexer, used to convert kmer sequence to column number for zarr
+kmerToIndex={}
+kmerCounter=0
+
 #prints all genome kmer counts as results/bovine/ECI-0715.fa AACAGCGTAAA 9
 with env.begin(write=False) as transaction:
     genomeCursor = transaction.cursor()
@@ -39,9 +44,19 @@ with env.begin(write=False) as transaction:
         #now looping between each genome
         genome = genome.decode('ascii')
         genome_db = env.open_db(genome.encode('ascii'))
+        genomeToIndex[genome] = genomeCounter
+        genomeCounter += 1
 
         with env.begin(write=False, db=genome_db) as txn:
             kmerCursor = txn.cursor()
             for kmerSeq, kmerCount in kmerCursor:
                 #now looping through the genomes kmer counts
-                print(genome, kmerSeq.decode('ascii'), kmerCount.decode('ascii'))
+                kmerSeq = kmerSeq.decode('ascii')
+                kmerCount = int (kmerCount)
+                kmerToIndex[kmerSeq] = kmerCounter
+                kmerCounter += 1
+                #print(genome, kmerSeq, kmerCount)
+                if kmerCount > 0 :
+                    genomeIndex = genomeToIndex[genome]
+                    kmerIndex = kmerToIndex[kmerSeq]
+                    zarrFile[genomeIndex, kmerIndex] = 1
