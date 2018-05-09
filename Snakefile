@@ -1,8 +1,7 @@
 configfile: "genomes.yaml"
 rule all:
     input:
-        expand("results/human/.{humans}", humans=config["humans"]),
-        expand("results/bovine/.{bovines}", bovines=config["bovines"]),
+        "results/touchFile3"
 
 
 rule count:
@@ -16,7 +15,7 @@ rule count:
     threads:
         2
     shell:
-        "jellyfish count -m 11 -s 100M -t {threads} {input} -o {output}"
+        "jellyfish count -m 4 -s 100M -t {threads} {input} -o {output}"
 
 rule dump:
     input:
@@ -35,5 +34,25 @@ rule loadIntoLmdb:
         touch("results/{species}/.{sample}")
     benchmark:
         "benchmarks/{sample}.benchmark.txt"
+    threads:
+        1
     shell:
         "python fastaParser.py {input}"
+
+rule createIndexer:
+    output:
+        touch("results/.touchFile2")
+
+    input:
+        expand("results/human/.{humans}", humans=config["humans"]),
+        expand("results/bovine/.{bovines}", bovines=config["bovines"])
+    shell:
+        "python indexCreator.py",
+
+rule createZarr:
+    input:
+        "results/.touchFile2"
+    output:
+        touch("results/touchFile3")
+    shell:
+        "python zarrCreate.py"
