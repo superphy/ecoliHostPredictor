@@ -1,7 +1,7 @@
 configfile: "genomes.yaml"
 rule all:
     input:
-        "results/touchFile3"
+        "results/.touchFile3"
 
 
 rule count:
@@ -35,7 +35,7 @@ rule loadIntoLmdb:
     benchmark:
         "benchmarks/{sample}.benchmark.txt"
     threads:
-        1
+        10000
     shell:
         "python fastaParser.py {input}"
 
@@ -53,6 +53,6 @@ rule createZarr:
     input:
         "results/.touchFile2"
     output:
-        touch("results/touchFile3")
+        touch("results/.touchFile3")
     shell:
         "python zarrCreate.py"
