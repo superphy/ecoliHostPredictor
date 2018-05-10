@@ -1,8 +1,10 @@
 configfile: "genomes.yaml"
+
+ruleorder: createZarr > createIndexer > loadIntoLmdb
 rule all:
     input:
-        "results/.touchFile3"
-
+        expand("results/human/.{humans}.fake", humans=config["humans"]),
+        expand("results/bovine/.{bovines}.fake", bovines=config["bovines"])
 
 rule count:
     input:
@@ -31,7 +33,7 @@ rule loadIntoLmdb:
     input:
         "results/{species}/{sample}.fa"
     output:
-        touch("results/{species}/.{sample}")
+        touch("results/{species}/{sample}.fake")
     benchmark:
         "benchmarks/{sample}.benchmark.txt"
     threads:
@@ -41,18 +43,17 @@ rule loadIntoLmdb:
 
 rule createIndexer:
     output:
-        touch("results/.touchFile2")
-
-    input:
-        expand("results/human/.{humans}", humans=config["humans"]),
-        expand("results/bovine/.{bovines}", bovines=config["bovines"])
+        touch("results/touchFile")
     shell:
         "python indexCreator.py",
 
 rule createZarr:
     input:
-        "results/.touchFile2"
+        "results/touchFile",
+        a="results/{species}/{sample}.fake"
     output:
-        touch("results/.touchFile3")
+        touch("results/{species}/.{sample}.fake")
+    threads:
+        1000
     shell:
-        "python zarrCreate.py"
+        "python zarrCreate.py {input.a}"
